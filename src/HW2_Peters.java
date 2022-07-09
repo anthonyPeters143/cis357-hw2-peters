@@ -5,8 +5,9 @@ public class HW2_Peters {
     private static final String INVENTORY_FILE = "INVENTORY_FILE",
             WELCOME_MESSAGE                     = "\nWelcome to Peter's cash register system!\n",
             FILENAME_MESSAGE                    = "Input file:",
+            FILE_INPUT_ERROR_MESSAGE            = "!!! Invalid input",
             BEGINNING_SALE_MESSAGE              = "\nBeginning a new sale? (Y/N) ",
-            SALE_INPUT_INCORRECT_MESSAGE        = "!!! Invalid input\nShould be (Y/N)\n",
+            SALE_INPUT_ERROR_MESSAGE            = "!!! Invalid input\nShould be (Y/N)\n",
             CODE_INPUT_INCORRECT_MESSAGE        = "!!! Invalid product code\nShould be [1-10], -1 = quit",
             QUANTITY_INPUT_INCORRECT_MESSAGE    = "!!! Invalid quantity\nShould be [1-100]",
             BREAK_LINE                          = "--------------------",
@@ -21,14 +22,17 @@ public class HW2_Peters {
             TENDER_AMOUNT_TOO_SMALL             = "\nAmount entered is too small",
             CHANGE_AMOUNT                       = "Change\t\t\t\t\t $",
             EOD_MESSAGE                         = "\nThe total sale for the day is  $",
-            THANK_YOU                           = "Thanks for using POST system. Goodbye.";
+            THANK_YOU                           = "Thanks for using POST system. Goodbye.",
+
+            FILE_NAME_KEY                       = "item.txt";
 
     // main class
     public static void main(String[] args) {
         // Declare and Initialization
         initialize();
 
-        // Sale
+        // Transaction
+
 
         // Finish
         System.exit(0);
@@ -36,6 +40,7 @@ public class HW2_Peters {
 
     private static void initialize() {
         // Declare and Initialization
+
 
         // Prompt for file name and input data from file
         fileInput();
@@ -46,34 +51,32 @@ public class HW2_Peters {
         String fileName;
         boolean fileValid = false;
 
-        // Prompt user for file name
+        // Prompt user for file name, loop till flag is true
         // Should be item.txt
-        try {
-            do {
-                // Setup scanner for input
-                Scanner inputScanner = new Scanner(System.in);
+        do {
+            // Setup scanner for input
+            Scanner inputScanner = new Scanner(System.in);
 
+            try {
                 // Output file name prompt
                 System.out.print(FILENAME_MESSAGE);
 
                 // User input
                 fileName = inputScanner.next();
 
-                if (){
-                    // Check if file is valid
+                // Check if file is valid
+                if (fileName.matches(FILE_NAME_KEY)){
 
+                    // Switch flag
                     fileValid = true;
                 }
 
-            } while (!fileValid);
+            // Should add more specific exception
+            } catch (Exception ioException) {
+                // Error msg
+            }
 
-
-
-
-        // Should add more specific exception
-        } catch (Exception ioException) {
-
-        }
+        } while (!fileValid);
 
         // input from file
     }
