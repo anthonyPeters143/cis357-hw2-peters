@@ -22,7 +22,7 @@ public class HW2_Peters {
             BREAK_LINE                          = "--------------------",
             ENTER_CODE_MESSAGE                  = "\nEnter product code : ",
             ITEM_NAME_MESSAGE                   = "         item name : ",
-            ENTER_QUANTITY_MESSAGE              = "Enter quantity :     ",
+            ENTER_QUANTITY_MESSAGE              = "\n\tEnter quantity : ",
             ITEM_TOTAL_MESSAGE                  = "        item total : $",
             RECEIPT_LINE                        = "\n----------------------------\n",
             RECEIPT_TOP                         = "Items list:\n",
@@ -233,7 +233,7 @@ public class HW2_Peters {
     private static void findCode(Scanner inputScanner) {
         // Declare and Initialization
         Item inputItem;
-        String userInput, itemCode;
+        String userInput;
         boolean codeInputFlag = false, quitFlag = false;
 
         // Print text break
@@ -241,70 +241,59 @@ public class HW2_Peters {
 
         // Loop till code input is valid
         do {
-            try {
-                // Reset code flag
-                codeInputFlag = false;
+            // Reset code flag
+            codeInputFlag = false;
 
-                // Prompt for code input
-                System.out.print(ENTER_CODE_MESSAGE);
+            // Prompt for code input
+            System.out.print(ENTER_CODE_MESSAGE);
 
-                // User input
-                userInput = inputScanner.next();
+            // User input
+            userInput = inputScanner.next();
 
-                // Check if code input is A or B + [###]
-                if (userInput.matches("[AaBb]\\d\\d\\d")){
-                    // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    // update to change first char to uppercase
+            // Check if code input is A or B + [###]
+            if (userInput.matches("[AB]\\d\\d\\d")) {
+                // Find item
+                inputItem = findItem(userInput);
 
-                    // Code input valid
-                    itemCode = userInput;
-
-                    // Find item
-                    inputItem = findItem(itemCode);
-
-                    if (inputItem == null) {
-                        // Item not found
-                        // Output incorrect code message
-                        System.out.print(CODE_INPUT_INCORRECT_MESSAGE);
-
-                    } else {
-                        // Set input flag to true
-                        codeInputFlag = true;
-
-                        // Item found
-                        // Output Item name message + item name from itemArray
-                        System.out.print(ITEM_NAME_MESSAGE + inputItem.getitemName());
-
-                        // Run findQuantity
-                        findQuantity(inputScanner, inputItem);
-                    }
-
-
-
-                } else if (userInput.equals("-1")) {
-                    quitFlag = true;
-
-                    // Print EOD
-
-                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-                } else if (userInput.equals("0000")) {
-                    // Print item list
-
-                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-                } else {
+                if (inputItem == null) {
+                    // Item not found
                     // Output incorrect code message
                     System.out.print(CODE_INPUT_INCORRECT_MESSAGE);
-                }
 
-            } catch (Exception e) {
-                // Code input is incorrect
+                } else {
+                    // Code input valid
+                    // Set input flag to true
+                    codeInputFlag = true;
+
+                    // Item found
+                    // Output Item name message + item name from itemArray
+                    System.out.print(ITEM_NAME_MESSAGE + inputItem.getitemName());
+
+                    // Run findQuantity
+                    findQuantity(inputScanner, inputItem);
+                }
+            } else if (userInput.equals("-1")) {
+                // Change flags for quiting and code input to true
+                quitFlag = true;
+                codeInputFlag = true;
+
+
+                // Print EOD
+
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+            } else if (userInput.equals("0000")) {
+                // Print item list
+
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            } else {
+                // Output incorrect code message
                 System.out.print(CODE_INPUT_INCORRECT_MESSAGE);
             }
 
-        } while (!codeInputFlag);
+        } while (!codeInputFlag || !quitFlag);
     }
 
 
