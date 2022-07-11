@@ -14,8 +14,12 @@ public class SaleItemTracker implements Comparable<SaleItemTracker> {
     }
 
     /**
-     * Non-Aug. Constructor
+     * Aug. Constructor
      * Calls resetSale method to reset sale totals
+     *
+     * @param itemID, Item object ID
+     * @param quantity, Int quantity of item
+     * @param total, Double total of quantity * price
      */
     SaleItemTracker(Item itemID, int quantity, double total) {
         this.itemIDTrack = itemID;

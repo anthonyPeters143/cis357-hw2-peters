@@ -18,14 +18,36 @@ public class Sale {
         saleItemTrackerArrayList = new ArrayList<>();
     }
 
+    /**
+     * Takes saleItem ID checks if an SaleItemTracker matches if so add to quantity and price trackers,
+     * if there isn't a matching SaleItemTracker then method will create one and add quantity and price trackers
+     *
+     * @param saleItem
+     * @param itemQuantity
+     * @param itemPrice
+     */
     public void addSaleItem(Item saleItem, int itemQuantity, double itemPrice) {
+        // Check if item already created
+        // loop array list to check
+
+        // If new
         // Create sale item
         saleItemTrackerArrayList.add(new SaleItemTracker(saleItem,itemQuantity,itemPrice));
+
+        // If not new
+
 
         // add item price to EOD
         EODTotal += itemPrice;
     }
 
+
+    /**
+     *
+     *
+     * @param currencyFormat
+     * @return
+     */
     public String createReceipt(DecimalFormat currencyFormat) {
         // Declare and Initialization
         String returnString = "";
@@ -37,6 +59,7 @@ public class Sale {
                 // check if taxable
                 if (saleItemTracker.getItemIDTrack().getItemTaxable()) {
                     // Taxable
+                    saleItemTracker.
 
                 }
                 else {
