@@ -1,5 +1,6 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -181,8 +182,7 @@ public class HW2_Peters {
                     System.out.print(BREAK_LINE);
 
                     // New sale
-                    newSale(inputScanner);
-
+                    findCode(inputScanner);
 
                 }
                 // Test if input is 1 char long and == N or n
@@ -192,7 +192,7 @@ public class HW2_Peters {
                     returnInt = 1;
 
                     // EOD earnings
-                    System.out.print(EOD_MESSAGE +  String.format("%1$8s",currencyFormat.format(sale.getEODtotal())) +
+                    System.out.print(EOD_MESSAGE +  String.format("%1$8s",currencyFormat.format(sale.getEODTotal())) +
                             "\n" + THANK_YOU);
                 }
                 else {
@@ -220,9 +220,11 @@ public class HW2_Peters {
 
     // Returns returnInt
     // Pram inputScanner
-    private static void newSale(Scanner inputScanner) {
-        String userInput;
-        boolean codeInputFlag;
+    private static void findCode(Scanner inputScanner) {
+        // Declare and Initialization
+        Item inputItem;
+        String userInput, itemCode;
+        boolean codeInputFlag = false, quitFlag = false;
 
         // Print text break
         System.out.print(BREAK_LINE);
@@ -241,26 +243,114 @@ public class HW2_Peters {
 
                 // Check if code input is A or B + [###]
                 if (userInput.matches("[AB]\\d\\d\\d")){
-                    // Code input valid
+                    // NEED TO TEST REGEX !!!!!!!!!!!!!!!!!!!
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                } else if (Integer.parseInt(userInput) == -1) {
+                    // Code input valid
+                    itemCode = userInput;
+
+                    // Find item
+                    inputItem = findItem(itemCode);
+
+                    if (inputItem == null) {
+                        // Item not found
+                        // Output incorrect code message
+                        System.out.print(CODE_INPUT_INCORRECT_MESSAGE);
+
+                    } else {
+                        // Set input flag to true
+                        codeInputFlag = true;
+
+                        // Item found
+                        // Output Item name message + item name from itemArray
+                        System.out.print(ITEM_NAME_MESSAGE + inputItem.getitemName());
+
+                        // Run findQuantity
+                        findQuantity(inputScanner, inputItem);
+                    }
+
+
+
+                } else if (userInput.equals("-1")) {
                     quitFlag = true;
 
                     // Print EOD
 
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+                } else if (userInput.equals("0000")) {
+                    // Print item list
+
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 } else {
-                    // Code Input Incorrect
-                    // Print incorrect message
+                    // Output incorrect code message
                     System.out.print(CODE_INPUT_INCORRECT_MESSAGE);
                 }
 
-            } catch (NumberFormatException numberFormatException) {
+            } catch (Exception e) {
                 // Code input is incorrect
                 System.out.print(CODE_INPUT_INCORRECT_MESSAGE);
             }
 
         } while (!codeInputFlag);
+    }
+
+
+    private static void findQuantity(Scanner inputScanner, Item inputItem){
+        // Declare and Initialization
+        int itemQuantity;
+        double itemPrice;
+        boolean quantityInputFlag = false;
+
+        do {
+            try {
+                // Prompt for item quantity
+                System.out.print(ENTER_CODE_MESSAGE);
+
+                // User input
+                itemQuantity = Integer.parseInt(inputScanner.next());
+
+                // Check if quantity is [1-100]
+                if (itemQuantity > 0 && itemQuantity <= 100) {
+                    // Quantity input valid
+                    quantityInputFlag = true;
+
+                    // Calc price
+                    itemPrice = inputItem.getPrice() * itemQuantity;
+
+                    // Add Item price to Sale object
+                    sale.addSaleItem(inputItem,itemQuantity,itemPrice);
+
+                    // Output item total
+                    System.out.print(ITEM_TOTAL_MESSAGE +  String.format("%1$8s",currencyFormat.format(itemPrice) + "\n"));
+                }
+                else {
+                    // Quantity Input Incorrect
+                    // Print incorrect message
+                    System.out.print(QUANTITY_INPUT_INCORRECT_MESSAGE);
+                }
+
+            } catch (Exception e) {
+                // Quantity input is incorrect
+                System.out.print(QUANTITY_INPUT_INCORRECT_MESSAGE);
+            }
+
+        } while (!quantityInputFlag);
+    }
+
+    // Returns item if code matches item in arrayList, if not returns null
+    private static Item findItem(String itemCode){
+        for (Item item : itemArrayList) {
+            if (Objects.equals(item.getItemCode(), itemCode)) {
+                // Item found, return item object
+                return item;
+            }
+        }
+
+        // If not found return null
+        return null;
     }
 
 
