@@ -1,5 +1,6 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Sale {
 
@@ -46,6 +47,13 @@ public class Sale {
 
         }
 
+        return returnString;
+
+    }
+
+    private ArrayList<SaleItemTracker> getSortedSaleItemTrackerArrayList() {
+        Collections.sort(saleItemTrackerArrayList);
+        return saleItemTrackerArrayList;
     }
 
     public double getEODTotal() {
