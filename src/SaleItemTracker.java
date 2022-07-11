@@ -1,4 +1,4 @@
-public class SaleItemTracker {
+public class SaleItemTracker implements Comparable<SaleItemTracker> {
 
     private Item itemIDTrack;
     private int itemQuantity;
@@ -35,5 +35,15 @@ public class SaleItemTracker {
     public Item getItemIDTrack() {
         return this.itemIDTrack;
     }
+
+
+    @Override
+    public int compareTo(SaleItemTracker o) {
+        return (this.itemIDTrack.getitemName().compareTo(o.itemIDTrack.getitemName()));
+    }
+
+//    {
+//    return (this.getAge() < candidate.getAge() ? -1 :
+//            (this.getAge() == candidate.getAge() ? 0 : 1));
 
 }

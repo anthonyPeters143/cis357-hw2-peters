@@ -1,5 +1,7 @@
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -8,7 +10,7 @@ public class HW2_Peters {
 
     private static final String INVENTORY_FILE = "INVENTORY_FILE",
             WELCOME_MESSAGE                     = "\nWelcome to Peter's cash register system!\n",
-            FILENAME_MESSAGE                    = "Input file:",
+            FILENAME_MESSAGE                    = "\nInput file:",
             FILE_INPUT_ERROR_MESSAGE            = "!!! Invalid input",
             BEGINNING_SALE_MESSAGE              = "\nBeginning a new sale? (Y/N) ",
             SALE_INPUT_ERROR_MESSAGE            = "!!! Invalid input\nShould be (Y/N)\n",
@@ -56,6 +58,7 @@ public class HW2_Peters {
     private static void initialize() {
         // Declare and Initialization
         sale = new Sale();
+        itemArrayList = new ArrayList<>();
 
         // Output welcome msg !!!
         System.out.print(WELCOME_MESSAGE);
@@ -69,6 +72,7 @@ public class HW2_Peters {
      *
      */
     private static void fileInput() {
+        File fileRef;
         String fileName = null, fileLine;
         String[] splitFileImport;
         Scanner fileScanner, inputScanner;
@@ -111,8 +115,11 @@ public class HW2_Peters {
 
         // input from file
         try {
+            // Create file
+            fileRef = new File(fileName);
+
             // Set up scanner
-            fileScanner = new Scanner(fileName);
+            fileScanner = new Scanner(fileRef);
 
             // Scan in input and split by new line commas
             fileLine = fileScanner.nextLine();
@@ -153,24 +160,34 @@ public class HW2_Peters {
     private static int checkOut() {
         // Declare and Initialization
         Scanner inputScanner;
-        int returnInt = 0;
+        String userInput = "";
+        int returnInt;
         boolean quitFlag = false;
 
         // Prompt and check input for 'Y'/'y' or 'N'/'n'
         try {
             // Set up scanner
             inputScanner = new Scanner(System.in);
+//            String userInput = "";
 
             // Loop input and check till correct
             do {
-                // Reset quit flag
+                // Reset quit flag and return int
                 quitFlag = false;
+                returnInt = 0;
 
                 // Output Beginning Message
                 System.out.print(BEGINNING_SALE_MESSAGE);
 
                 // User input
-                String userInput = inputScanner.next();
+                // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                try {
+//                    userInput = inputScanner.next();
+//                } catch (java.util.NoSuchElementException noSuchElementException) {
+//                    noSuchElementException.printStackTrace();
+//                    noSuchElementException.getCause();
+//                }
+                userInput = "y";
 
                 // Test if input is 1 char long and == Y or y
                 if (userInput.matches("[Yy]{1}")) {
