@@ -1,3 +1,6 @@
+// CHANGE NAME TO CASH REG AND CREATE DRIVE CLASS FOR MAIN
+
+
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -10,19 +13,19 @@ public class HW2_Peters {
 
     private static final String INVENTORY_FILE = "INVENTORY_FILE",
             WELCOME_MESSAGE                     = "\nWelcome to Peter's cash register system!\n",
-            FILENAME_MESSAGE                    = "\nInput file:",
+            FILENAME_MESSAGE                    = "\nInput file : ",
             FILE_INPUT_ERROR_MESSAGE            = "!!! Invalid input",
             BEGINNING_SALE_MESSAGE              = "\nBeginning a new sale? (Y/N) ",
             SALE_INPUT_ERROR_MESSAGE            = "!!! Invalid input\nShould be (Y/N)\n",
-            CODE_INPUT_INCORRECT_MESSAGE        = "!!! Invalid product code\nShould be A or B[###], -1 = quit",
+            CODE_INPUT_INCORRECT_MESSAGE        = "!!! Invalid product code\nShould be A or B[###], -1 = quit\n",
             QUANTITY_INPUT_INCORRECT_MESSAGE    = "!!! Invalid quantity\nShould be [1-100]",
             BREAK_LINE                          = "--------------------",
-            ENTER_CODE_MESSAGE                  = "\nEnter product code: ",
-            ITEM_NAME_MESSAGE                   = "         item name: ",
-            ENTER_QUANTITY_MESSAGE              = "Enter quantity:     ",
-            ITEM_TOTAL_MESSAGE                  = "        item total: $",
+            ENTER_CODE_MESSAGE                  = "\nEnter product code : ",
+            ITEM_NAME_MESSAGE                   = "         item name : ",
+            ENTER_QUANTITY_MESSAGE              = "Enter quantity :     ",
+            ITEM_TOTAL_MESSAGE                  = "        item total : $",
             RECEIPT_LINE                        = "\n----------------------------\n",
-            RECEIPT_TOP                         ="Items list:\n",
+            RECEIPT_TOP                         = "Items list:\n",
             TENDERED_AMOUNT_RECEIPT             = "\nTendered amount\t\t\t $",
             TENDER_AMOUNT_WRONG                 = "\nAmount entered is invalid",
             TENDER_AMOUNT_TOO_SMALL             = "\nAmount entered is too small",
@@ -35,6 +38,8 @@ public class HW2_Peters {
     private static ArrayList<Item> itemArrayList;
     private static Sale sale;
 
+    private static Scanner inputScanner;
+
     private static final DecimalFormat currencyFormat = new DecimalFormat("#,###.00");
 
 
@@ -42,11 +47,17 @@ public class HW2_Peters {
      *
      */
     public static void main(String[] args) {
+        // Create scanner
+        inputScanner = new Scanner(System.in);
+
         // Declare and Initialization
-        initialize();
+        initialize(inputScanner);
 
         // Transaction
-        transaction();
+        transaction(inputScanner);
+
+        // Close scanner
+        inputScanner.close();
 
         // Finish
         System.exit(0);
@@ -55,7 +66,7 @@ public class HW2_Peters {
     /**
      *
      */
-    private static void initialize() {
+    private static void initialize(Scanner inputScanner) {
         // Declare and Initialization
         sale = new Sale();
         itemArrayList = new ArrayList<>();
@@ -64,18 +75,18 @@ public class HW2_Peters {
         System.out.print(WELCOME_MESSAGE);
 
         // Prompt for file name and input data from file
-        fileInput();
+        fileInput(inputScanner);
 
     }
 
     /**
      *
      */
-    private static void fileInput() {
+    private static void fileInput(Scanner inputScanner) {
         File fileRef;
         String fileName = null, fileLine;
         String[] splitFileImport;
-        Scanner fileScanner, inputScanner;
+        Scanner fileScanner;
         boolean fileValid = false;
 
         // Prompt user for file name, loop till flag is true
@@ -96,9 +107,6 @@ public class HW2_Peters {
 
                     // Switch flag
                     fileValid = true;
-
-                    // Close scanner
-                    inputScanner.close();
                 }
                 else {
                     // Error file input msg
@@ -147,47 +155,35 @@ public class HW2_Peters {
     /**
      *
      */
-    private static void transaction() {
+    private static void transaction(Scanner inputScanner) {
         int transactionNumber;
 
         // Loop till checkOut method returns != 1
         do {
-            // Run checkOut method
-            transactionNumber = checkOut();
+            // Pass scanner, run checkOut method
+            transactionNumber = checkOut(inputScanner);
         } while (transactionNumber != 1);
     }
 
-    private static int checkOut() {
+    private static int checkOut(Scanner inputScanner) {
         // Declare and Initialization
-        Scanner inputScanner;
         String userInput = "";
         int returnInt;
         boolean quitFlag = false;
 
         // Prompt and check input for 'Y'/'y' or 'N'/'n'
         try {
-            // Set up scanner
-            inputScanner = new Scanner(System.in);
-//            String userInput = "";
+            // Reset quit flag and return int
+            quitFlag = false;
+            returnInt = 0;
+
+            // Output Beginning Message
+            System.out.print(BEGINNING_SALE_MESSAGE);
 
             // Loop input and check till correct
             do {
-                // Reset quit flag and return int
-                quitFlag = false;
-                returnInt = 0;
-
-                // Output Beginning Message
-                System.out.print(BEGINNING_SALE_MESSAGE);
-
                 // User input
-                // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//                try {
-//                    userInput = inputScanner.next();
-//                } catch (java.util.NoSuchElementException noSuchElementException) {
-//                    noSuchElementException.printStackTrace();
-//                    noSuchElementException.getCause();
-//                }
-                userInput = "y";
+                userInput = inputScanner.nextLine();
 
                 // Test if input is 1 char long and == Y or y
                 if (userInput.matches("[Yy]{1}")) {
@@ -219,9 +215,6 @@ public class HW2_Peters {
                 }
 
             } while (returnInt == 0);
-
-            // Close input scanner
-            inputScanner.close();
 
             // Return returnInt
             return returnInt;
@@ -259,9 +252,9 @@ public class HW2_Peters {
                 userInput = inputScanner.next();
 
                 // Check if code input is A or B + [###]
-                if (userInput.matches("[AB]\\d\\d\\d")){
-                    // NEED TO TEST REGEX !!!!!!!!!!!!!!!!!!!
-                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if (userInput.matches("[AaBb]\\d\\d\\d")){
+                    // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // update to change first char to uppercase
 
                     // Code input valid
                     itemCode = userInput;
@@ -324,7 +317,7 @@ public class HW2_Peters {
         do {
             try {
                 // Prompt for item quantity
-                System.out.print(ENTER_CODE_MESSAGE);
+                System.out.print(ENTER_QUANTITY_MESSAGE);
 
                 // User input
                 itemQuantity = Integer.parseInt(inputScanner.next());
