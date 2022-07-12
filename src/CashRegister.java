@@ -277,13 +277,6 @@ public class CashRegister {
                 // Print receipt top
                 runReceipt();
 
-                // Prompt for tender
-
-                // Print receipt down
-
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
             } else if (userInput.equals("0000")) {
                 // Print item list
 
@@ -354,7 +347,7 @@ public class CashRegister {
     }
 
     // Creates receipt, prompts for tender, and output change
-    private static String runReceipt() {
+    private static void runReceipt() {
         // Declare and Initialization
         boolean tenderCorrectFlag = false;
         double tenderAmount = 0;
@@ -373,15 +366,15 @@ public class CashRegister {
                 tenderAmount = Double.parseDouble(inputScanner.next());
 
                 // Tender amount is correct
-                if (tenderAmount >= sale.getTotalWithTax()) {
+                if (tenderAmount >= sale.getSubtotalTax()) {
                     tenderCorrectFlag = true;
 
                     // Change
                     // find change by subtracting tenderAmount by Total with tax
-                    System.out.print(CHANGE_AMOUNT + String.format("%1$7s",currencyFormat.format(tenderAmount-sale.getTotalWithTax())) + RECEIPT_LINE);
-
-                    // return value to 0, loop will re-prompt for sale
-                    returnInt = 0;
+                    System.out.print(CHANGE_AMOUNT + String.format("%1$7s",currencyFormat.format(tenderAmount-sale.getSubtotalTax())) + RECEIPT_LINE);
+//
+//                    // return value to 0, loop will re-prompt for sale
+//                    returnInt = 0;
 
                     // reset sale counter in Sale object
                     sale.resetSale();

@@ -28,16 +28,25 @@ public class SaleItemTracker implements Comparable<SaleItemTracker> {
     }
 
 
+
     public void addItemQuantity(int quantity) {
         this.itemQuantity = quantity;
+    }
+
+    public void addItemTotal(double price) {
+        this.itemTotal += price;
+    }
+
+    public Item getItemIDTrack() {
+        return this.itemIDTrack;
     }
 
     public int getItemQuantity() {
         return this.itemQuantity;
     }
 
-    public Item getItemIDTrack() {
-        return this.itemIDTrack;
+    public double getItemTotal() {
+        return this.itemTotal;
     }
 
 
@@ -45,9 +54,5 @@ public class SaleItemTracker implements Comparable<SaleItemTracker> {
     public int compareTo(SaleItemTracker o) {
         return (this.itemIDTrack.getitemName().compareTo(o.itemIDTrack.getitemName()));
     }
-
-//    {
-//    return (this.getAge() < candidate.getAge() ? -1 :
-//            (this.getAge() == candidate.getAge() ? 0 : 1));
 
 }
