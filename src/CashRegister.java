@@ -27,7 +27,24 @@ public class CashRegister {
             TENDER_AMOUNT_TOO_SMALL             = "\nAmount entered is too small",
             CHANGE_AMOUNT                       = "Change\t\t\t\t\t $",
             EOD_MESSAGE                         = "\nThe total sale for the day is  $",
+    
             UPDATE_PROMPT_MESSAGE               = "\nDo you want to update the items data? (A/D/M/Q): ",
+            UPDATE_ERROR_MESSAGE                = "!!! Invalid input\nShould be (A/D/M/Q)",
+            UPDATE_CODE_PROMPT                  = "item code: ",
+            UPDATE_NAME_PROMPT                  = "item name: ",
+            UPDATE_PRICE_PROMPT                 = "item price: ",
+    
+            UPDATE_ITEM_ALREADY_ADDED           = "!!! item already created",
+            UPDATE_ITEM_NOT_FOUND               = "!!! item not found",
+    
+            UPDATE_CODE_ERROR_MESSAGE           = "!!! Invalid input\nShould be A[###] or B[###]",
+            UPDATE_NAME_ERROR_MESSAGE           = "!!! Invalid input\nName already used",
+            UPDATE_PRICE_ERROR_MESSAGE          = "!!! Invalid input\nShould be greater than 0",
+    
+            UPDATE_ADD_SUCCESSFUL               = "Item add successful!",
+            UPDATE_DELETE_SUCCESSFUL            = "Item delete successful!",
+            UPDATE_MODIFY_SUCCESSFUL            = "Item modify successful!",
+    
             THANK_YOU                           = "Thanks for using POST system. Goodbye.",
 
             FILE_NAME_KEY                       = "item.txt";
@@ -196,9 +213,8 @@ public class CashRegister {
 
                     // EOD earnings
                     System.out.print(EOD_MESSAGE +  String.format("%1$8s",currencyFormat.format(sale.getEODTotal())));
-
-                    // CONVERT WHOLE PATH INTO ANOTHER METHOD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    
+                    // Prompt for update
                     updateItems(inputScanner);
 
                     // Output thank you message
@@ -228,9 +244,9 @@ public class CashRegister {
     private static void updateItems(Scanner inputScanner){
         // Declare and Initialization
         String userInput;
-        boolean updateFlag = false;
+        boolean quitFlag = false;
 
-        // Loop till input is valid
+        // Loop till quit flag is true
         do {
             // Prompt for Add, Delete, Mod., Q Items
             System.out.print(UPDATE_PROMPT_MESSAGE);
@@ -241,33 +257,274 @@ public class CashRegister {
             switch (userInput) {
                 case "A": {
                     // ADD
-                    updateFlag = true;
+                    updateAddItem(inputScanner);
                     break;
                 }
                 case "D": {
                     // DELETE
-                    updateFlag = true;
+                    updateDeleteItem(inputScanner);
                     break;
                 }
                 case "M": {
                     // MOD
-                    updateFlag = true;
+                    updateModifyItem(inputScanner);
                     break;
                 }
                 case "Q": {
                     // QUIT
-                    // LIST ITEMS?
-                    updateFlag = true;
+                    quitFlag = true;
+                    
+                    // LIST ITEMS
+                    listItems();
+                    
                     break;
                 }
                 default: {
                     // INPUT WRONG
+                    System.out.print(UPDATE_ERROR_MESSAGE);
                 }
             }
-        } while ()
+            
+           
+        } while (!quitFlag)
+    }
+    
+//             UPDATE_PROMPT_MESSAGE               = "\nDo you want to update the items data? (A/D/M/Q): ",
+//             UPDATE_ERROR_MESSAGE                = "!!! Invalid input\nShould be (A/D/M/Q)",
+//             UPDATE_CODE_PROMPT                  = "item code: ",
+//             UPDATE_NAME_PROMPT                  = "item name: ",
+//             UPDATE_PRICE_PROMPT                 = "item price: ",
+    
+//             UPDATE_ITEM_ALREADY_ADDED           = "!!! item already created",
+//             UPDATE_ITEM_NOT_FOUND               = "!!! item not found",
+    
+//             UPDATE_CODE_ERROR_MESSAGE           = "!!! Invalid input\nShould be A[###] or B[###]",
+//             UPDATE_NAME_ERROR_MESSAGE           = "!!! Invalid input",
+//             UPDATE_PRICE_ERROR_MESSAGE          = "!!! Invalid input\nShould be greater than 0",
+    
+//             UPDATE_ADD_SUCCESSFUL               = "Item add successful!",
+//             UPDATE_DELETE_SUCCESSFUL            = "Item delete successful!",
+//             UPDATE_MODIFY_SUCCESSFUL            = "Item modify successful!",
 
 
-        }
+    private static void updateAddItem(Scanner inputScanner) {
+        // Declare and Initialization
+        String userInput, addCode, addName, addPrice;
+        boolean codeInputFlag = false, nameInputFlag = false, priceInputFlag = false;
+        
+        // prompt for code, name, price
+        // Find code
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_CODE_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+             // Check if code input is A or B + [###]
+            if (userInput.matches("[AB]\\d\\d\\d")) {
+                // Code input valid
+                
+                // Check if item already created, if so returns null
+                if (findItemFromCode(userInput) == null) {
+                    // Not created before
+                    codeInputFlag = true;
+                    addCode = userInput;
+                    
+                } else {
+                    // Created before
+                    System.out.print(UPDATE_ITEM_ALREADY_ADDED);
+                    
+                }
+            } else {
+                // Code input invalid
+                System.out.print(UPDATE_CODE_ERROR_MESSAGE)
+                
+            }
+        } while (!codeInputFlag);
+        
+        // Find name
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_NAME_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+            // Check name if created before
+            // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHOULD BE CHECKING FOR NAME NOT CODE, ANOTHER USE IN MOD PATH
+            if (findItemFromName(userInput) == null) {
+                // Item name not created before 
+                nameInputFlag = true;
+                addName = userInput
+                
+            } else {
+                // Item name used before
+                System.out.print(UPDATE_NAME_ERROR_MESSAGE);
+                
+            }
+        } while (!nameInputFlag);
+        
+        // Find price
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_PRICE_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+            try {
+                if (Double.parseDouble(userInput) > 0) {
+                    // Input valid
+                    priceInputFlag = true;
+                    addPrice = userInput;
+                    
+                } else {
+                    // Input invalid
+                    System.out.print(UPDATE_PRICE_ERROR_MESSAGE);
+                    
+                }
+                
+            } catch (Execption e) {
+                // Price input invalid
+                System.out.print(UPDATE_PRICE_ERROR_MESSAGE);
+            }
+        } while (!priceInputFlag);
+        
+        // Add item to item list
+        
+        // Output success message
+        System.out.print(UPDATE_ADD_SUCCESSFUL);
+    }
+
+    private static void updateDeleteItem(Scanner inputScanner) {
+        // Declare and Initialization
+        String userInput, deleteCode;
+        boolean codeInputFlag = false;
+        
+        // Prompt for code
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_CODE_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+             // Check if code input is A or B + [###]
+            if (userInput.matches("[AB]\\d\\d\\d")) {
+                // Code input valid
+                // Check if item already created, if so returns null
+                if (findItemFromCode(userInput) == null) {
+                    // Not created before
+                    System.out.print(UPDATE_ITEM_NOT_FOUND);
+                    
+                } else {   
+                    // Created before
+                    codeInputFlag = true;
+                    deleteCode = userInput;
+                    
+                }
+            } else {
+                // Code input invalid
+                System.out.print(UPDATE_CODE_ERROR_MESSAGE)
+                
+            }
+        } while (!codeInputFlag);
+        
+        // Delete item from item list
+        
+        // Output success message
+        System.out.print(UPDATE_DELETE_SUCCESSFUL);
+        
+    }
+
+    private static void updateModifyItem(Scanner inputScanner) {
+        // Declare and Initialization
+        String userInput, modCode, modName, modPrice;
+        boolean codeInputFlag = false, nameInputFlag = false, priceInputFlag = false;
+        
+        // Prompt for code, name, price
+        // Find code
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_CODE_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+             // Check if code input is A or B + [###]
+            if (userInput.matches("[AB]\\d\\d\\d")) {
+                // Code input valid
+                // Check if item already created, if so returns null
+                if (findItemFromCode(userInput) == null) {
+                    // Not created before
+                    System.out.print(UPDATE_ITEM_NOT_FOUND);
+                    
+                } else {
+                    // Created before
+                    codeInputFlag = true;
+                    modCode = userInput;
+                    
+                }
+            } else {
+                // Code input invalid
+                System.out.print(UPDATE_CODE_ERROR_MESSAGE)
+                
+            }
+        } while (!codeInputFlag);
+        
+        // Find name
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_NAME_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+            // Check name if created before
+            // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHOULD BE CHECKING FOR NAME NOT CODE, ANOTHER USE IN ADD PATH
+            if (findItemFromName(userInput) == null) {
+                // Item name not created before 
+                nameInputFlag = true;
+                modName = userInput
+                
+            } else {
+                // Item name used before
+                System.out.print(UPDATE_ITEM_ALREADY_ADDED);
+                
+            }
+        } while (!nameInputFlag);
+        
+        // Find price
+        do {
+            // Prompt for code input
+            System.out.print(UPDATE_PRICE_PROMPT);
+
+            // User input
+            userInput = inputScanner.next();
+            
+            try {
+                if (Double.parseDouble(userInput) > 0) {
+                    // Input valid
+                    priceInputFlag = true;
+                    modPrice = userInput;
+                    
+                } else {
+                    // Input invalid
+                    System.out.print(UPDATE_PRICE_ERROR_MESSAGE);
+                    
+                }
+                
+            } catch (Execption e) {
+                // Price input invalid
+                System.out.print(UPDATE_PRICE_ERROR_MESSAGE);
+            }
+        } while (!priceInputFlag);
+        
+        // find code, change name and price
+        
+        // Output success message
+        System.out.print(UPDATE_MODIFY_SUCCESSFUL);
     }
 
     // Returns returnInt
@@ -292,7 +549,7 @@ public class CashRegister {
             // Check if code input is A or B + [###]
             if (userInput.matches("[AB]\\d\\d\\d")) {
                 // Find item
-                inputItem = findItem(userInput);
+                inputItem = findItemFromCode(userInput);
 
                 if (inputItem == null) {
                     // Item not found
@@ -321,8 +578,7 @@ public class CashRegister {
 
             } else if (userInput.equals("0000")) {
                 // Print item list
-
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                listItems();
 
             } else {
                 // Output incorrect code message
@@ -376,14 +632,27 @@ public class CashRegister {
     }
 
     // Returns item if code matches item in arrayList, if not returns null
-    private static Item findItem(String itemCode){
+    
+    // ORGINALY findItem 
+    private static Item findItemFromCode(String itemCode){
         for (Item item : itemArrayList) {
             if (Objects.equals(item.getItemCode(), itemCode)) {
                 // Item found, return item object
                 return item;
             }
         }
-
+        // If not found return null
+        return null;
+    }
+    
+    // Returns item if name matches item om arrayList, if not returns null
+        private static Item findItemFromName(String itemName){
+        for (Item item : itemArrayList) {
+            if (Objects.equals(item.getitemName(), itemName)) {
+                // Item found, return item object
+                return item;
+            }
+        }
         // If not found return null
         return null;
     }
@@ -428,9 +697,27 @@ public class CashRegister {
             }
 
         } while (!tenderCorrectFlag);
-
-
-
+    }
+    
+    // Outputs list of items included in item list
+    private static void listItems() {
+        // Declare and Initialization
+        String returnString = "";
+        
+        // Add code, name, and price headers to top of list
+       
+        // Loop through iitem list and concat code, name, and price of each item
+        for (Item item : itemArrayList) {
+            // FORMAT WITH STRING.FORMAT()
+            
+//             item.getItemName() == item name      CHANGE NAME IN ITEM CLASS
+//             item.getItemCode() == item code
+//             item.getItemPrice() == item price    CHANGE NAME IN ITEM CLASS
+            }
+        }
+        
+        // Output string
+        System.out.print(returnString);
     }
 
 }
