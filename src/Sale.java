@@ -80,16 +80,18 @@ public class Sale {
                 }
 
                 // Add item's name, quantity, total to return list
-                returnString = returnString.concat("\t" + saleItemTracker.getItemQuantity() +
-                                "\t" + saleItemTracker.getItemIDTrack().getitemName() +
-                                String.format("%1$8s",currencyFormat.format(saleItemTracker.getItemTotal())+"\n"));
+                returnString = returnString.concat(String.format("%4s %-19s %s",saleItemTracker.getItemQuantity(),
+                        saleItemTracker.getItemIDTrack().getitemName(), "$")
+                        + String.format("%1$8s",currencyFormat.format(saleItemTracker.getItemTotal())+"\n"));
             }
         }
-        // Add subtotals to bottom of receipt
+        // Compile subtotals
         subtotal = taxableTotal + nontaxableTotal;
-        subtotalTax = (taxableTotal * .06) + nontaxableTotal;
-        returnString = returnString.concat("Subtotal\t\t\t\t $" +  String.format("%1$7s",currencyFormat.format(subtotal)) +
-                        String.format("%1$7s",currencyFormat.format(subtotalTax)));
+        subtotalTax = (taxableTotal * .06) + taxableTotal + nontaxableTotal;
+
+        // Attach subtotal output strings to bottom of receipt
+        returnString = returnString.concat("\nSubtotal\t\t\t\t $" +  String.format("%1$7s",currencyFormat.format(subtotal))
+                + "\nTotal with Tax (6%)\t\t $" + String.format("%1$7s",currencyFormat.format(subtotalTax)));
 
         return returnString;
 

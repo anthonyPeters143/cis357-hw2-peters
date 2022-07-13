@@ -22,11 +22,12 @@ public class CashRegister {
             ITEM_TOTAL_MESSAGE                  = "        item total : $",
             RECEIPT_LINE                        = "\n----------------------------\n",
             RECEIPT_TOP                         = "Items list:\n",
-            TENDERED_AMOUNT_RECEIPT             = "\nTendered amount\t\t\t $",
+            TENDERED_AMOUNT_RECEIPT             = "\nTendered amount\t\t\t $ ",
             TENDER_AMOUNT_WRONG                 = "\nAmount entered is invalid",
             TENDER_AMOUNT_TOO_SMALL             = "\nAmount entered is too small",
             CHANGE_AMOUNT                       = "Change\t\t\t\t\t $",
             EOD_MESSAGE                         = "\nThe total sale for the day is  $",
+            UPDATE_PROMPT_MESSAGE               = "\nDo you want to update the items data? (A/D/M/Q): ",
             THANK_YOU                           = "Thanks for using POST system. Goodbye.",
 
             FILE_NAME_KEY                       = "item.txt";
@@ -193,11 +194,44 @@ public class CashRegister {
                     // Input Correct, user = no
                     returnInt = 1;
 
+                    // CONVERT WHOLE PATH INTO ANOTHER METHOD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                     // EOD earnings
                     System.out.print(EOD_MESSAGE +  String.format("%1$8s",currencyFormat.format(sale.getEODTotal())));
 
                     // Prompt for Add, Delete, Mod., Q Items
                     // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                    // Prompt for code input
+                    System.out.print(UPDATE_PROMPT_MESSAGE);
+
+                    // User input
+                    userInput = inputScanner.next();
+
+                    switch (userInput) {
+                        case "A": {
+                            // ADD
+                            break;
+                        }
+                        case "D": {
+                            // DELETE
+                            break;
+                        }
+                        case "M" : {
+                            // MOD
+                            break;
+                        }
+                        case "Q" : {
+                            // QUIT
+                            // LIST ITEMS?
+                            break;
+                        }
+                        default: {
+                            // INPUT WRONG
+                        }
+                    }
+
 
                     // Output thank you message
                     System.out.print("\n" + THANK_YOU);
@@ -229,9 +263,6 @@ public class CashRegister {
         Item inputItem;
         String userInput;
         boolean codeInputFlag = false, quitFlag = false;
-
-        // Print text break
-        System.out.print(BREAK_LINE);
 
         // Loop till code input is valid
         do {
@@ -270,9 +301,6 @@ public class CashRegister {
                 // Change flags for quiting and code input to true
                 quitFlag = true;
                 codeInputFlag = true;
-
-                // Print receipt
-                System.out.print("NEED TO REPLACE W? RECEIPT");
 
                 // Print receipt top
                 runReceipt();
@@ -372,9 +400,6 @@ public class CashRegister {
                     // Change
                     // find change by subtracting tenderAmount by Total with tax
                     System.out.print(CHANGE_AMOUNT + String.format("%1$7s",currencyFormat.format(tenderAmount-sale.getSubtotalTax())) + RECEIPT_LINE);
-//
-//                    // return value to 0, loop will re-prompt for sale
-//                    returnInt = 0;
 
                     // reset sale counter in Sale object
                     sale.resetSale();
