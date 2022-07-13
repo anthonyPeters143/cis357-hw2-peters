@@ -194,44 +194,12 @@ public class CashRegister {
                     // Input Correct, user = no
                     returnInt = 1;
 
-                    // CONVERT WHOLE PATH INTO ANOTHER METHOD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
                     // EOD earnings
                     System.out.print(EOD_MESSAGE +  String.format("%1$8s",currencyFormat.format(sale.getEODTotal())));
 
-                    // Prompt for Add, Delete, Mod., Q Items
-                    // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-                    // Prompt for code input
-                    System.out.print(UPDATE_PROMPT_MESSAGE);
-
-                    // User input
-                    userInput = inputScanner.next();
-
-                    switch (userInput) {
-                        case "A": {
-                            // ADD
-                            break;
-                        }
-                        case "D": {
-                            // DELETE
-                            break;
-                        }
-                        case "M" : {
-                            // MOD
-                            break;
-                        }
-                        case "Q" : {
-                            // QUIT
-                            // LIST ITEMS?
-                            break;
-                        }
-                        default: {
-                            // INPUT WRONG
-                        }
-                    }
-
+                    // CONVERT WHOLE PATH INTO ANOTHER METHOD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    updateItems(inputScanner);
 
                     // Output thank you message
                     System.out.print("\n" + THANK_YOU);
@@ -254,6 +222,52 @@ public class CashRegister {
             return 0;
         }
 
+    }
+
+    // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private static void updateItems(Scanner inputScanner){
+        // Declare and Initialization
+        String userInput;
+        boolean updateFlag = false;
+
+        // Loop till input is valid
+        do {
+            // Prompt for Add, Delete, Mod., Q Items
+            System.out.print(UPDATE_PROMPT_MESSAGE);
+
+            // User input
+            userInput = inputScanner.next();
+
+            switch (userInput) {
+                case "A": {
+                    // ADD
+                    updateFlag = true;
+                    break;
+                }
+                case "D": {
+                    // DELETE
+                    updateFlag = true;
+                    break;
+                }
+                case "M": {
+                    // MOD
+                    updateFlag = true;
+                    break;
+                }
+                case "Q": {
+                    // QUIT
+                    // LIST ITEMS?
+                    updateFlag = true;
+                    break;
+                }
+                default: {
+                    // INPUT WRONG
+                }
+            }
+        } while ()
+
+
+        }
     }
 
     // Returns returnInt
