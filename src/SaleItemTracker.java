@@ -1,5 +1,7 @@
 /**
+ * @author Anthony Peters
  *
+ * Holds Item ID, Quantities, and Totals, can add to Quantities and Totals
  */
 public class SaleItemTracker implements Comparable<SaleItemTracker> {
 
@@ -32,27 +34,46 @@ public class SaleItemTracker implements Comparable<SaleItemTracker> {
 
 
     /**
+     * Add to Quantity amount
      *
+     * @param quantity, int amount of item
      */
     public void addItemQuantity(int quantity) {
         this.itemQuantity += quantity;
     }
 
     /**
+     * Add to Total amount
      *
+     * @param price, double total of item
      */
     public void addItemTotal(double price) {
         this.itemTotal += price;
     }
 
+    /**
+     * Returns item ID
+     *
+     * @return Item, item ID
+     */
     public Item getItemIDTrack() {
         return this.itemIDTrack;
     }
 
+    /**
+     * Returns item quantity
+     *
+     * @return int, item quantity
+     */
     public int getItemQuantity() {
         return this.itemQuantity;
     }
 
+    /**
+     * Returns item total
+     *
+     * @return double, item total
+     */
     public double getItemTotal() {
         return this.itemTotal;
     }

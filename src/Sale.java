@@ -3,7 +3,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * @author Anthony Peters
  *
+ * Holds EODTotal, subtotals, subtotalTax, and saleItemTrackerArrayList. Allows adding new sale items, creating
+ * receipts, sorting the saleItemTrackerArrayList, and reseting sale fields.
  */
 public class Sale {
 
@@ -25,9 +28,9 @@ public class Sale {
      * Takes saleItem ID checks if an SaleItemTracker matches if so add to quantity and price trackers,
      * if there isn't a matching SaleItemTracker then method will create one and add quantity and price trackers
      *
-     * @param saleItem
-     * @param itemQuantity
-     * @param itemPrice
+     * @param saleItem, Item Item object ID
+     * @param itemQuantity, int amount of Item
+     * @param itemPrice, double price of Item
      */
     public void addSaleItem(Item saleItem, int itemQuantity, double itemPrice) {
         // Add items price to EOD total
@@ -51,10 +54,11 @@ public class Sale {
     }
 
     /**
+     * Sorts arrayList creates String then loops through ArrayList adding to counter depending on if Items are taxable
+     * then concat a formatted String including quantity, name, and total.
      *
-     *
-     * @param currencyFormat
-     * @return
+     * @param currencyFormat, DecimalFormat formatting currency
+     * @return String, String of receipt
      */
     public String createReceipt(DecimalFormat currencyFormat) {
         // Declare and Initialization
@@ -101,7 +105,9 @@ public class Sale {
     }
 
     /**
+     * Sorts ArrayList then returns the sorted Array
      *
+     * @return ArrayList<SaleItemTracker>, Sorted ArrayList
      */
     private ArrayList<SaleItemTracker> getSortedSaleItemTrackerArrayList() {
         Collections.sort(saleItemTrackerArrayList);
@@ -109,7 +115,7 @@ public class Sale {
     }
 
     /**
-     *
+     * Resets subtotals sales totals and clears ArrayList
      */
     public void resetSale() {
         // Reset subtotals
@@ -120,14 +126,29 @@ public class Sale {
         saleItemTrackerArrayList.clear();
     }
 
+    /**
+     * Returns sale end of day total
+     *
+     * @return double, end of day total
+     */
     public double getEODTotal() {
         return EODTotal;
     }
 
+    /**
+     * Returns sale subtotal
+     *
+     * @return double, subtotal
+     */
     public double getSubtotal() {
         return subtotal;
     }
 
+    /**
+     * Returns sale subtotal with tax
+     *
+     * @return double, subtotal with tax included
+     */
     public double getSubtotalTax() {
         return subtotalTax;
     }

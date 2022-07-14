@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @author Anthony Peters
  *
  * The CashRegister contatins initialize and transaction methods to create and run Sale and Item objects to track
- * multiple sales. CashReigster also can add, modifiy, and delete items from the Item data list
+ * multiple sales. CashReigster also can add, modifiy, and delete items from the Item data list.
  */
 
 public class CashRegister {
@@ -61,7 +61,7 @@ public class CashRegister {
             FILE_NAME_KEY                       = "item.txt";
 
     /**
-     *
+     * ArrayList to store Item objects
      */
     private static ArrayList<Item> itemArrayList;
     private static Sale sale;
@@ -71,10 +71,13 @@ public class CashRegister {
      */
     private static Scanner inputScanner;
 
+    /**
+     * Format for currency
+     */
     private static final DecimalFormat currencyFormat = new DecimalFormat("#,###.00");
 
     /**
-     *
+     * Driver for CashRegister class
      */
     public static void run() {
         // Create scanner
@@ -91,7 +94,9 @@ public class CashRegister {
     }
 
     /**
+     * Creates Sale and ArrayList objects, Outputs welcome message, then inputs data from item.txt file into ArrayList
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void initialize(Scanner inputScanner) {
         // Declare and Initialization
@@ -103,11 +108,13 @@ public class CashRegister {
 
         // Prompt for file name and input data from file
         fileInput(inputScanner);
-
     }
 
     /**
+     * Prompts user for file name, checks input against a key if valid scans in item.txt contents into split file input
+     * then convert the data into Item objects
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void fileInput(Scanner inputScanner) {
         File fileRef;
@@ -180,7 +187,9 @@ public class CashRegister {
     }
 
     /**
+     * Driver for transaction loop
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void transaction(Scanner inputScanner) {
         int transactionNumber;
@@ -193,7 +202,10 @@ public class CashRegister {
     }
 
     /**
+     * Prompts user for a Y or N input. If Y then returnInt=2 and findCode is call to start sale transaction. If N then
+     * returnInt=1 and prints end of day total earnings then prompts for updating item data
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static int checkOut(Scanner inputScanner) {
         // Declare and Initialization
@@ -264,7 +276,11 @@ public class CashRegister {
     }
 
     /**
+     * Prompts for update choices between Add, Delete, Modify, or Quit. If Add then add new item into Item ArrayList. If
+     * Delete then remove Item from ArrayList. If Modify then remove old Item object and create new Item object. If Quit
+     * then run list items method.
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void updateItems(Scanner inputScanner){
         // Declare and Initialization
@@ -315,7 +331,9 @@ public class CashRegister {
     }
 
     /**
+     * Prompts user for Item code, name, and price. Creates new Item object with input fields. Outputs successful message
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void updateAddItem(Scanner inputScanner) {
         // Declare and Initialization
@@ -412,7 +430,9 @@ public class CashRegister {
     }
 
     /**
+     * Prompts for Item code then searches for item by code, then removes it from array list
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void updateDeleteItem(Scanner inputScanner) {
         // Declare and Initialization
@@ -457,7 +477,10 @@ public class CashRegister {
     }
 
     /**
+     * Prompts for Item code, name, and price, searches for Item by code, then deletes original Item and creates new
+     * Item. Outputs success message.
      *
+     * @param inputScanner Scanner, System.in scanner
      */
     private static void updateModifyItem(Scanner inputScanner) {
         // Declare and Initialization
@@ -556,10 +579,11 @@ public class CashRegister {
     }
 
     /**
+     * Driver for findQuantity,runReceipt,listItems methods, prompts for Item code. If input=Item.code outputs Item name
+     * then runs findQuantity. If input=-1 run runReceipt. If input=0000 print list of Items,Names,Prices
      *
+     * @param inputScanner Scanner, System.in scanner
      */
-    // Returns returnInt
-    // Pram inputScanner
     private static void findCode(Scanner inputScanner) {
         // Declare and Initialization
         Item inputItem;
@@ -620,7 +644,10 @@ public class CashRegister {
     }
 
     /**
+     * Prompt for Item quantity, check if between 1-100, add sale to Sale object, then print total of selection
      *
+     * @param inputScanner Scanner, System.in scanner
+     * @param inputItem Item, Item to pass to Sale
      */
     private static void findQuantity(Scanner inputScanner, Item inputItem){
         // Declare and Initialization
@@ -665,9 +692,12 @@ public class CashRegister {
     }
 
     /**
+     * Searches itemArrayList from Item with matching itemCode value, then returns Item object address. If not found
+     * then will return null.
      *
+     * @return Item, Item address
+     * @param itemCode String, Item code to search against itemArrayList
      */
-    // Returns item if code matches item in arrayList, if not returns null
     private static Item findItemFromCode(String itemCode){
         for (Item item : itemArrayList) {
             if (Objects.equals(item.getItemCode(), itemCode)) {
@@ -680,9 +710,12 @@ public class CashRegister {
     }
 
     /**
+     * Searches itemArrayList from Item with matching itemName value, then returns Item object address. If not found
+     * then will return null.
      *
+     * @return Item, Item address
+     * @param itemName String, Item code to search against itemArrayList
      */
-    // Returns item if name matches item om arrayList, if not returns null
         private static Item findItemFromName(String itemName){
         for (Item item : itemArrayList) {
             if (Objects.equals(item.getItemName(), itemName)) {
@@ -695,7 +728,8 @@ public class CashRegister {
     }
 
     /**
-     *
+     * Outputs a receipt string that is created by Sale.createReceipt, output subtotals, prompt for tender, then resets
+     * Sale object.
      */
     // Creates receipt, prompts for tender, and output change
     private static void runReceipt() {
@@ -739,7 +773,8 @@ public class CashRegister {
     }
 
     /**
-     *
+     * Creates a String of all Items in itemArrayList, loops through itemArrayList getting code, name, and price then
+     * outputs it.
      */
     // Outputs list of items included in item list
     private static void listItems() {

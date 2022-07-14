@@ -1,5 +1,7 @@
 /**
+ * @author Anthony Peters
  *
+ * Holds Items codes, names, prices, and taxable state
  */
 public class Item {
 
@@ -85,7 +87,7 @@ public class Item {
     /**
      * Sets item code
      *
-     * @param String, itemCode
+     * @param importItemCode, String itemCode
      */
     public void setItemCode(String importItemCode) {
         // Set item code
@@ -95,7 +97,7 @@ public class Item {
     /**
      * Sets item taxable flag
      *
-     * @param String, itemCode
+     * @param importItemCode, String itemCode
      */
     public void setItemTaxable(String importItemCode) {
         // Check taxable status
@@ -105,16 +107,16 @@ public class Item {
     /**
      * Sets item name
      *
-     * @param String, itemName
+     * @param importItemName, itemName
      */
-    public void setitemName(String importitemName) {
-        this.itemName = importitemName;
+    public void setItemName(String importItemName) {
+        this.itemName = importItemName;
     }
 
     /**
      * Sets item price
      *
-     * @param double, itemPrice
+     * @param importPrice, double itemPrice
      */
     public void setPrice(double importPrice) {
         this.price = importPrice;
