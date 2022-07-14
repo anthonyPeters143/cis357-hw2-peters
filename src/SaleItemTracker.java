@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public class SaleItemTracker implements Comparable<SaleItemTracker> {
 
     private Item itemIDTrack;
@@ -28,11 +31,16 @@ public class SaleItemTracker implements Comparable<SaleItemTracker> {
     }
 
 
-
+    /**
+     *
+     */
     public void addItemQuantity(int quantity) {
-        this.itemQuantity = quantity;
+        this.itemQuantity += quantity;
     }
 
+    /**
+     *
+     */
     public void addItemTotal(double price) {
         this.itemTotal += price;
     }
@@ -52,7 +60,7 @@ public class SaleItemTracker implements Comparable<SaleItemTracker> {
 
     @Override
     public int compareTo(SaleItemTracker o) {
-        return (this.itemIDTrack.getitemName().compareTo(o.itemIDTrack.getitemName()));
+        return (this.itemIDTrack.getItemName().compareTo(o.itemIDTrack.getItemName()));
     }
 
 }

@@ -1,3 +1,6 @@
+/**
+ *
+ */
 public class Item {
 
     // Global vars
@@ -66,7 +69,7 @@ public class Item {
      *
      * @return String, itemName
      */
-    public String getitemName() {
+    public String getItemName() {
         return this.itemName;
     }
 
@@ -75,12 +78,12 @@ public class Item {
      *
      * @return double, itemPrice
      */
-    public double getPrice() {
+    public double getItemPrice() {
         return this.price;
     }
 
     /**
-     * Sets item code, and sets taxable boolean
+     * Sets item code
      *
      * @param String, itemCode
      */

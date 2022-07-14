@@ -2,6 +2,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ *
+ */
 public class Sale {
 
     private double EODTotal, subtotal, subtotalTax;
@@ -36,7 +39,7 @@ public class Sale {
             if (saleItem.equals(saleItemTracker.getItemIDTrack())){
                 // Item tracker already created
                 // Update saleItemTracker quantity and price
-                saleItemTracker.addItemTotal(itemQuantity);
+                saleItemTracker.addItemQuantity(itemQuantity);
                 saleItemTracker.addItemTotal(itemPrice);
 
                 return;
@@ -69,19 +72,19 @@ public class Sale {
                 if (saleItemTracker.getItemIDTrack().getItemTaxable()) {
                     // Taxable
                     // Increment taxable total
-                    taxableTotal =+ saleItemTracker.getItemTotal();
+                    taxableTotal += saleItemTracker.getItemTotal();
 
                 }
                 else {
                     // Non-taxable
                     // Increment nontaxable total
-                    nontaxableTotal =+ saleItemTracker.getItemTotal();
+                    nontaxableTotal += saleItemTracker.getItemTotal();
 
                 }
 
                 // Add item's name, quantity, total to return list
                 returnString = returnString.concat(String.format("%4s %-19s %s",saleItemTracker.getItemQuantity(),
-                        saleItemTracker.getItemIDTrack().getitemName(), "$")
+                        saleItemTracker.getItemIDTrack().getItemName(), "$")
                         + String.format("%1$8s",currencyFormat.format(saleItemTracker.getItemTotal())+"\n"));
             }
         }
@@ -97,11 +100,17 @@ public class Sale {
 
     }
 
+    /**
+     *
+     */
     private ArrayList<SaleItemTracker> getSortedSaleItemTrackerArrayList() {
         Collections.sort(saleItemTrackerArrayList);
         return saleItemTrackerArrayList;
     }
 
+    /**
+     *
+     */
     public void resetSale() {
         // Reset subtotals
         subtotal = 0;

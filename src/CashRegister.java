@@ -5,9 +5,16 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+/**
+ * @author Anthony Peters
+ *
+ * The CashRegister contatins initialize and transaction methods to create and run Sale and Item objects to track
+ * multiple sales. CashReigster also can add, modifiy, and delete items from the Item data list
+ */
+
 public class CashRegister {
 
-    private static final String INVENTORY_FILE = "INVENTORY_FILE",
+    private static final String
             WELCOME_MESSAGE                     = "\nWelcome to Peter's cash register system!\n",
             FILENAME_MESSAGE                    = "\nInput file : ",
             FILE_INPUT_ERROR_MESSAGE            = "!!! Invalid input",
@@ -36,26 +43,39 @@ public class CashRegister {
     
             UPDATE_ITEM_ALREADY_ADDED           = "!!! item already created",
             UPDATE_ITEM_NOT_FOUND               = "!!! item not found",
+
     
-            UPDATE_CODE_ERROR_MESSAGE           = "!!! Invalid input\nShould be A[###] or B[###]",
-            UPDATE_NAME_ERROR_MESSAGE           = "!!! Invalid input\nName already used",
-            UPDATE_PRICE_ERROR_MESSAGE          = "!!! Invalid input\nShould be greater than 0",
+            UPDATE_CODE_ERROR_MESSAGE           = "!!! Invalid input\nShould be A[###] or B[###]\n",
+            UPDATE_NAME_ERROR_MESSAGE           = "!!! Invalid input\nName shouldn't be only digits\n",
+
+            UPDATE_NAME_OLD_MESSAGE             = "!!! Invalid input\nName already used\n",
+
+            UPDATE_PRICE_ERROR_MESSAGE          = "!!! Invalid input\nShould be greater than 0\n",
     
-            UPDATE_ADD_SUCCESSFUL               = "Item add successful!",
-            UPDATE_DELETE_SUCCESSFUL            = "Item delete successful!",
-            UPDATE_MODIFY_SUCCESSFUL            = "Item modify successful!",
+            UPDATE_ADD_SUCCESSFUL               = "Item add successful!\n",
+            UPDATE_DELETE_SUCCESSFUL            = "Item delete successful!\n",
+            UPDATE_MODIFY_SUCCESSFUL            = "Item modify successful!\n",
     
             THANK_YOU                           = "Thanks for using POST system. Goodbye.",
 
             FILE_NAME_KEY                       = "item.txt";
 
+    /**
+     *
+     */
     private static ArrayList<Item> itemArrayList;
     private static Sale sale;
 
+    /**
+     * System in scanner
+     */
     private static Scanner inputScanner;
 
     private static final DecimalFormat currencyFormat = new DecimalFormat("#,###.00");
 
+    /**
+     *
+     */
     public static void run() {
         // Create scanner
         inputScanner = new Scanner(System.in);
@@ -172,6 +192,9 @@ public class CashRegister {
         } while (transactionNumber != 1);
     }
 
+    /**
+     *
+     */
     private static int checkOut(Scanner inputScanner) {
         // Declare and Initialization
         String userInput = "";
@@ -240,7 +263,9 @@ public class CashRegister {
 
     }
 
-    // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /**
+     *
+     */
     private static void updateItems(Scanner inputScanner){
         // Declare and Initialization
         String userInput;
@@ -286,32 +311,18 @@ public class CashRegister {
             }
             
            
-        } while (!quitFlag)
+        } while (!quitFlag);
     }
-    
-//             UPDATE_PROMPT_MESSAGE               = "\nDo you want to update the items data? (A/D/M/Q): ",
-//             UPDATE_ERROR_MESSAGE                = "!!! Invalid input\nShould be (A/D/M/Q)",
-//             UPDATE_CODE_PROMPT                  = "item code: ",
-//             UPDATE_NAME_PROMPT                  = "item name: ",
-//             UPDATE_PRICE_PROMPT                 = "item price: ",
-    
-//             UPDATE_ITEM_ALREADY_ADDED           = "!!! item already created",
-//             UPDATE_ITEM_NOT_FOUND               = "!!! item not found",
-    
-//             UPDATE_CODE_ERROR_MESSAGE           = "!!! Invalid input\nShould be A[###] or B[###]",
-//             UPDATE_NAME_ERROR_MESSAGE           = "!!! Invalid input",
-//             UPDATE_PRICE_ERROR_MESSAGE          = "!!! Invalid input\nShould be greater than 0",
-    
-//             UPDATE_ADD_SUCCESSFUL               = "Item add successful!",
-//             UPDATE_DELETE_SUCCESSFUL            = "Item delete successful!",
-//             UPDATE_MODIFY_SUCCESSFUL            = "Item modify successful!",
 
-
+    /**
+     *
+     */
     private static void updateAddItem(Scanner inputScanner) {
         // Declare and Initialization
-        String userInput, addCode, addName, addPrice;
+        String userInput, addCode = "", addName = "";
+        double addPrice = 0;
         boolean codeInputFlag = false, nameInputFlag = false, priceInputFlag = false;
-        
+
         // prompt for code, name, price
         // Find code
         do {
@@ -338,7 +349,7 @@ public class CashRegister {
                 }
             } else {
                 // Code input invalid
-                System.out.print(UPDATE_CODE_ERROR_MESSAGE)
+                System.out.print(UPDATE_CODE_ERROR_MESSAGE);
                 
             }
         } while (!codeInputFlag);
@@ -348,19 +359,21 @@ public class CashRegister {
             // Prompt for code input
             System.out.print(UPDATE_NAME_PROMPT);
 
+            // Clear scanner buffer
+            inputScanner.nextLine();
+
             // User input
-            userInput = inputScanner.next();
+            userInput = inputScanner.nextLine();
             
             // Check name if created before
-            // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHOULD BE CHECKING FOR NAME NOT CODE, ANOTHER USE IN MOD PATH
             if (findItemFromName(userInput) == null) {
                 // Item name not created before 
                 nameInputFlag = true;
-                addName = userInput
+                addName = userInput;
                 
             } else {
                 // Item name used before
-                System.out.print(UPDATE_NAME_ERROR_MESSAGE);
+                System.out.print(UPDATE_NAME_OLD_MESSAGE);
                 
             }
         } while (!nameInputFlag);
@@ -377,7 +390,7 @@ public class CashRegister {
                 if (Double.parseDouble(userInput) > 0) {
                     // Input valid
                     priceInputFlag = true;
-                    addPrice = userInput;
+                    addPrice = Double.parseDouble(userInput);
                     
                 } else {
                     // Input invalid
@@ -385,21 +398,25 @@ public class CashRegister {
                     
                 }
                 
-            } catch (Execption e) {
+            } catch (Exception e) {
                 // Price input invalid
                 System.out.print(UPDATE_PRICE_ERROR_MESSAGE);
             }
         } while (!priceInputFlag);
         
         // Add item to item list
+        itemArrayList.add(new Item(addCode,addName,addPrice));
         
         // Output success message
         System.out.print(UPDATE_ADD_SUCCESSFUL);
     }
 
+    /**
+     *
+     */
     private static void updateDeleteItem(Scanner inputScanner) {
         // Declare and Initialization
-        String userInput, deleteCode;
+        String userInput, deleteCode = "";
         boolean codeInputFlag = false;
         
         // Prompt for code
@@ -422,25 +439,30 @@ public class CashRegister {
                     // Created before
                     codeInputFlag = true;
                     deleteCode = userInput;
-                    
+
                 }
             } else {
                 // Code input invalid
-                System.out.print(UPDATE_CODE_ERROR_MESSAGE)
+                System.out.print(UPDATE_CODE_ERROR_MESSAGE);
                 
             }
         } while (!codeInputFlag);
-        
+
         // Delete item from item list
-        
+        itemArrayList.remove(findItemFromCode(deleteCode));
+
         // Output success message
         System.out.print(UPDATE_DELETE_SUCCESSFUL);
         
     }
 
+    /**
+     *
+     */
     private static void updateModifyItem(Scanner inputScanner) {
         // Declare and Initialization
-        String userInput, modCode, modName, modPrice;
+        String userInput, modCode = "", modName = "";
+        double modPrice = 0;
         boolean codeInputFlag = false, nameInputFlag = false, priceInputFlag = false;
         
         // Prompt for code, name, price
@@ -468,7 +490,7 @@ public class CashRegister {
                 }
             } else {
                 // Code input invalid
-                System.out.print(UPDATE_CODE_ERROR_MESSAGE)
+                System.out.print(UPDATE_CODE_ERROR_MESSAGE);
                 
             }
         } while (!codeInputFlag);
@@ -478,21 +500,23 @@ public class CashRegister {
             // Prompt for code input
             System.out.print(UPDATE_NAME_PROMPT);
 
+            // Clear scanner buffer
+            inputScanner.nextLine();
+
             // User input
-            userInput = inputScanner.next();
-            
-            // Check name if created before
-            // NTF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SHOULD BE CHECKING FOR NAME NOT CODE, ANOTHER USE IN ADD PATH
-            if (findItemFromName(userInput) == null) {
-                // Item name not created before 
-                nameInputFlag = true;
-                modName = userInput
-                
+            userInput = inputScanner.nextLine();
+
+            // Check if name is a digit
+            if (userInput.matches("\\d+")) {
+                // Contains only digits
+                System.out.print(UPDATE_NAME_ERROR_MESSAGE);
+
             } else {
-                // Item name used before
-                System.out.print(UPDATE_ITEM_ALREADY_ADDED);
-                
+                // Doesn't contain only digits
+                nameInputFlag = true;
+                modName = userInput;
             }
+
         } while (!nameInputFlag);
         
         // Find price
@@ -507,7 +531,7 @@ public class CashRegister {
                 if (Double.parseDouble(userInput) > 0) {
                     // Input valid
                     priceInputFlag = true;
-                    modPrice = userInput;
+                    modPrice = Double.parseDouble(userInput);
                     
                 } else {
                     // Input invalid
@@ -515,18 +539,25 @@ public class CashRegister {
                     
                 }
                 
-            } catch (Execption e) {
+            } catch (Exception e) {
                 // Price input invalid
                 System.out.print(UPDATE_PRICE_ERROR_MESSAGE);
             }
         } while (!priceInputFlag);
-        
-        // find code, change name and price
-        
+
+        // Remove old item
+        itemArrayList.remove(findItemFromCode(modCode));
+
+        // Add new item's code, name, and price
+        itemArrayList.add(new Item(modCode,modName,modPrice));
+
         // Output success message
         System.out.print(UPDATE_MODIFY_SUCCESSFUL);
     }
 
+    /**
+     *
+     */
     // Returns returnInt
     // Pram inputScanner
     private static void findCode(Scanner inputScanner) {
@@ -563,7 +594,7 @@ public class CashRegister {
 
                     // Item found
                     // Output Item name message + item name from itemArray
-                    System.out.print(ITEM_NAME_MESSAGE + inputItem.getitemName());
+                    System.out.print(ITEM_NAME_MESSAGE + inputItem.getItemName());
 
                     // Run findQuantity
                     findQuantity(inputScanner, inputItem);
@@ -588,7 +619,9 @@ public class CashRegister {
         } while (!codeInputFlag || !quitFlag);
     }
 
-
+    /**
+     *
+     */
     private static void findQuantity(Scanner inputScanner, Item inputItem){
         // Declare and Initialization
         int itemQuantity;
@@ -609,7 +642,7 @@ public class CashRegister {
                     quantityInputFlag = true;
 
                     // Calc price
-                    itemPrice = inputItem.getPrice() * itemQuantity;
+                    itemPrice = inputItem.getItemPrice() * itemQuantity;
 
                     // Add Item price to Sale object
                     sale.addSaleItem(inputItem,itemQuantity,itemPrice);
@@ -631,9 +664,10 @@ public class CashRegister {
         } while (!quantityInputFlag);
     }
 
+    /**
+     *
+     */
     // Returns item if code matches item in arrayList, if not returns null
-    
-    // ORGINALY findItem 
     private static Item findItemFromCode(String itemCode){
         for (Item item : itemArrayList) {
             if (Objects.equals(item.getItemCode(), itemCode)) {
@@ -644,11 +678,14 @@ public class CashRegister {
         // If not found return null
         return null;
     }
-    
+
+    /**
+     *
+     */
     // Returns item if name matches item om arrayList, if not returns null
         private static Item findItemFromName(String itemName){
         for (Item item : itemArrayList) {
-            if (Objects.equals(item.getitemName(), itemName)) {
+            if (Objects.equals(item.getItemName(), itemName)) {
                 // Item found, return item object
                 return item;
             }
@@ -657,6 +694,9 @@ public class CashRegister {
         return null;
     }
 
+    /**
+     *
+     */
     // Creates receipt, prompts for tender, and output change
     private static void runReceipt() {
         // Declare and Initialization
@@ -664,7 +704,6 @@ public class CashRegister {
         double tenderAmount = 0;
 
         // Print top of receipt
-        // NTC !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         System.out.print(RECEIPT_LINE + RECEIPT_TOP + sale.createReceipt(currencyFormat));
 
         // Loop till tendered amount is larger than total with tax
@@ -698,24 +737,25 @@ public class CashRegister {
 
         } while (!tenderCorrectFlag);
     }
-    
+
+    /**
+     *
+     */
     // Outputs list of items included in item list
     private static void listItems() {
         // Declare and Initialization
         String returnString = "";
-        
+
         // Add code, name, and price headers to top of list
-       
-        // Loop through iitem list and concat code, name, and price of each item
+        returnString = returnString.concat(String.format("%-11s %-15s %-12s\n","item code","item name","unit price"));
+
+        // Loop through item list and concat code, name, and price of each item
         for (Item item : itemArrayList) {
             // FORMAT WITH STRING.FORMAT()
-            
-//             item.getItemName() == item name      CHANGE NAME IN ITEM CLASS
-//             item.getItemCode() == item code
-//             item.getItemPrice() == item price    CHANGE NAME IN ITEM CLASS
-            }
+            returnString = returnString.concat(String.format("%-11s %-15s %-8s\n",item.getItemCode(),item.getItemName(),
+                    currencyFormat.format(item.getItemPrice())));
+
         }
-        
         // Output string
         System.out.print(returnString);
     }
